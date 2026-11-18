@@ -12,6 +12,10 @@ ENV/
 # Streamlit
 .streamlit/secrets.toml
 
+# Documents and archives
+*.zip
+*.pdf
+
 # IDE / OS
 .vscode/
 .idea/

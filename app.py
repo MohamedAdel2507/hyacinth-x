@@ -9,6 +9,7 @@ import streamlit as st
 
 import hyacinth_x_module_01 as module_01
 import hyacinth_x_module_02 as module_02
+import hyacinth_x_module_03 as module_03
 
 # Page configuration
 st.set_page_config(
@@ -25,6 +26,7 @@ def main():
     selected_module = st.sidebar.radio(
         "Module Navigation",
         [
+            "Module 03 — Energy & Utilities Calculator",
             "Module 02 — Process Yield Estimator",
             "Module 01 — Feedstock Analyzer",
         ],
@@ -33,7 +35,9 @@ def main():
     )
     st.sidebar.markdown("---")
 
-    if selected_module == "Module 02 — Process Yield Estimator":
+    if selected_module == "Module 03 — Energy & Utilities Calculator":
+        module_03.main()
+    elif selected_module == "Module 02 — Process Yield Estimator":
         module_02.main()
     else:
         module_01.main()
