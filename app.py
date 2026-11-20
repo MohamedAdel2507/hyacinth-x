@@ -10,6 +10,7 @@ import streamlit as st
 import hyacinth_x_module_01 as module_01
 import hyacinth_x_module_02 as module_02
 import hyacinth_x_module_03 as module_03
+import hyacinth_x_module_04 as module_04
 
 # Page configuration
 st.set_page_config(
@@ -19,6 +20,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+
 def main():
     st.sidebar.markdown("# 🌿 HYACINTH-X")
     st.sidebar.caption("Second-Generation Bioethanol Engineering Suite")
@@ -26,6 +28,7 @@ def main():
     selected_module = st.sidebar.radio(
         "Module Navigation",
         [
+            "Module 04 — Zero-Waste Manager",
             "Module 03 — Energy & Utilities Calculator",
             "Module 02 — Process Yield Estimator",
             "Module 01 — Feedstock Analyzer",
@@ -35,12 +38,15 @@ def main():
     )
     st.sidebar.markdown("---")
 
-    if selected_module == "Module 03 — Energy & Utilities Calculator":
+    if selected_module == "Module 04 — Zero-Waste Manager":
+        module_04.main()
+    elif selected_module == "Module 03 — Energy & Utilities Calculator":
         module_03.main()
     elif selected_module == "Module 02 — Process Yield Estimator":
         module_02.main()
     else:
         module_01.main()
+
 
 if __name__ == "__main__":
     main()

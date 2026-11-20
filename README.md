@@ -10,7 +10,22 @@ A suite of preliminary engineering calculators and process screening tools for w
 
 ## 🚀 Modules Overview
 
-### ⚡ Module 03: PFD-Based Energy & Utilities Calculator *(New)*
+### ♻️ Module 04: Zero-Waste Manager *(New)*
+Mass-flow tracking, residue valorization, and circularity indicators for biorefinery process streams:
+1. **Process Streams Basis:** Time basis selection (Daily `kg/day` or Hourly `kg/hour`), with direct manual stream input or automated JSON import from upstream modules.
+2. **Residue Valorization Pathways:**
+   - **Lignin-rich residue:** Allocation across combustion/energy recovery, materials (binders, adsorbents), and biochar/carbonized materials.
+   - **Other solid residues:** Allocation across composting/soil amendment, energy recovery, and material pathways.
+   - **Ash & inorganic solids:** Partitioning between beneficial mineral/soil reuse and managed disposal.
+   - Real-time allocation error checks and unassigned stream warnings.
+3. **Water Management:** Wastewater recycling ratio and post-recycle wastewater treatment fraction before environmental discharge.
+4. **CO₂ Management:** Biogenic CO₂ capture percentage and captured CO₂ utilization/storage accounting.
+5. **Results & Circularity Indicators:**
+   - Key circularity metrics: Solid residue recovery allocation %, water recycle ratio %, and CO₂ utilization ratio %.
+   - Stream allocation and mass balances for solids, water, and carbon dioxide.
+6. **Data Export:** Complete results export in JSON (including basis, inputs, allocations, outputs, and indicators) and solid-stream / comprehensive balances in CSV.
+
+### ⚡ Module 03: PFD-Based Energy & Utilities Calculator
 Estimates process utility demand (thermal and electrical) across equipment stages:
 1. **Production Basis:** Dry biomass feed rate (kg/day) and ethanol production target (kg/day).
 2. **Washing & Drying:** Hydraulic pump energy from wash flow and pump head; dryer thermal duty accounting for sensible water heating, latent heat of evaporation, and dry solids heating with efficiency rating.
@@ -55,9 +70,9 @@ Feedstock characterization and mass accounting:
    ```bash
    streamlit run app.py
    ```
-   *Or run Module 03 independently:*
+   *Or run Module 04 independently:*
    ```bash
-   streamlit run hyacinth_x_module_03.py
+   streamlit run hyacinth_x_module_04.py
    ```
 
 ---
