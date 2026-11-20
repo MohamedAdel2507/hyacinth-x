@@ -11,6 +11,7 @@ import hyacinth_x_module_01 as module_01
 import hyacinth_x_module_02 as module_02
 import hyacinth_x_module_03 as module_03
 import hyacinth_x_module_04 as module_04
+import hyacinth_x_module_05 as module_05
 
 # Page configuration
 st.set_page_config(
@@ -28,6 +29,7 @@ def main():
     selected_module = st.sidebar.radio(
         "Module Navigation",
         [
+            "Module 05 — Techno-Economic Analysis",
             "Module 04 — Zero-Waste Manager",
             "Module 03 — Energy & Utilities Calculator",
             "Module 02 — Process Yield Estimator",
@@ -38,7 +40,9 @@ def main():
     )
     st.sidebar.markdown("---")
 
-    if selected_module == "Module 04 — Zero-Waste Manager":
+    if selected_module == "Module 05 — Techno-Economic Analysis":
+        module_05.main()
+    elif selected_module == "Module 04 — Zero-Waste Manager":
         module_04.main()
     elif selected_module == "Module 03 — Energy & Utilities Calculator":
         module_03.main()

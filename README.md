@@ -10,7 +10,22 @@ A suite of preliminary engineering calculators and process screening tools for w
 
 ## 🚀 Modules Overview
 
-### ♻️ Module 04: Zero-Waste Manager *(New)*
+### 💰 Module 05: Techno-Economic Analysis (TEA) *(New)*
+Screening-level economic assessment and financial feasibility dashboard:
+1. **Automated Data Import:** Recursive alias-based ingestion of production, consumables, utilities, and by-product quantities directly from Module 02–04 JSON exports or manual input.
+2. **Production & Consumption Accounting:** Annual and daily ethanol throughput, feedstock requirements, enzymes, yeast/chemicals, electrical & thermal utilities, water, waste, and CO₂/biochar flows.
+3. **Market Pricing Engine:** Granular unit price inputs for raw materials, utilities (electricity, thermal steam, water, fuel), ethanol selling price, and by-product credits (biochar, excess power/steam).
+4. **Operating Cost (OPEX) Structure:** Detailed breakdown of variable materials/utilities and fixed operational expenses (labor, maintenance, transportation, waste treatment, other OPEX) with energy recovery credit deduction.
+5. **Capital Recovery & Financial Modeling (CAPEX):** Annualized capital charge computation via discounted Capital Recovery Factor (CRF) or straight-line amortization, corporate tax estimation, and optional CAPEX inclusion in break-even analysis.
+6. **Economic KPI Dashboard:**
+   - Annual OPEX, Net Production Cost per Liter (EGP/L), Annual Revenue, and Operating Profit.
+   - Operating Break-Even Selling Price and Capital-Inclusive Break-Even Price (EGP/L).
+   - Operating Margin (%) and Simple Capital Payback Period (years).
+   - Dynamic visual charts for Cost Breakdown and Revenue vs. OPEX/CAPEX comparison.
+7. **Deterministic Sensitivity Analysis:** Real-time one-at-a-time price variation sweeping (±5% to ±100%) on key cost drivers (feedstock, enzymes, chemicals, electricity, steam).
+8. **Comprehensive Data Export:** Full economic summary export in CSV (`utf-8-sig`) and structured configuration/results in JSON.
+
+### ♻️ Module 04: Zero-Waste Manager
 Mass-flow tracking, residue valorization, and circularity indicators for biorefinery process streams:
 1. **Process Streams Basis:** Time basis selection (Daily `kg/day` or Hourly `kg/hour`), with direct manual stream input or automated JSON import from upstream modules.
 2. **Residue Valorization Pathways:**
@@ -70,9 +85,9 @@ Feedstock characterization and mass accounting:
    ```bash
    streamlit run app.py
    ```
-   *Or run Module 04 independently:*
+   *Or run Module 05 independently:*
    ```bash
-   streamlit run hyacinth_x_module_04.py
+   streamlit run hyacinth_x_module_05.py
    ```
 
 ---
