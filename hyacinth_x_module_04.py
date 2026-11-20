@@ -16,18 +16,21 @@ APP_TITLE = "HYACINTH-X | Module 04 — Zero-Waste Manager"
 
 
 def find_nested_val(data: Any, target_keys: list[str]) -> float | None:
-    """Search recursively for target keys in dictionaries, returning the first float-convertible match."""
-    if not isinstance(data, dict):
-        return None
-    for k in target_keys:
-        if k in data and data[k] is not None:
-            try:
-                return float(data[k])
-            except (ValueError, TypeError):
-                pass
-    for v in data.values():
-        if isinstance(v, dict):
+    """Search recursively for target keys in dictionaries and lists, returning the first float-convertible match."""
+    if isinstance(data, dict):
+        for k in target_keys:
+            if k in data and data[k] is not None:
+                try:
+                    return float(data[k])
+                except (ValueError, TypeError):
+                    pass
+        for v in data.values():
             found = find_nested_val(v, target_keys)
+            if found is not None:
+                return found
+    elif isinstance(data, list):
+        for item in data:
+            found = find_nested_val(item, target_keys)
             if found is not None:
                 return found
     return None
@@ -69,17 +72,17 @@ def main() -> None:
 
                 # Stream inputs mapping
                 stream_keys = {
-                    "m4_lignin": ["lignin_residue", "lignin_rich_residue", "lignin", "Lignin"],
-                    "m4_other_residue": ["other_residue", "solid_residue", "unconverted_biomass", "Other / extractives", "other", "Other"],
-                    "m4_ash": ["ash_residue", "ash", "Ash", "inorganic_solids"],
-                    "m4_wastewater": ["wastewater", "wastewater_flow", "process_wastewater", "water_waste"],
-                    "m4_co2": ["co2_generated", "co2", "CO2", "co2_estimate"],
+                    "m4_lignin": ["lignin_residue", "lignin_rich_residue", "lignin", "Lignin", "retained_lignin", "lignin_kg"],
+                    "m4_other_residue": ["other_residue", "solid_residue", "unconverted_biomass", "Other / extractives", "other", "Other", "retained_other"],
+                    "m4_ash": ["ash_residue", "ash", "Ash", "inorganic_solids", "retained_ash", "ash_kg"],
+                    "m4_wastewater": ["wastewater", "wastewater_flow", "process_wastewater", "water_waste", "wastewater_kg", "effluent"],
+                    "m4_co2": ["co2_generated", "co2", "CO2", "co2_estimate", "co2_produced", "fermentation_co2", "co2_kg"],
                     "m4_additional_stream": ["other_discard", "other_waste", "discard_streams"],
                 }
                 for widget_key, target_keys in stream_keys.items():
                     val = find_nested_val(imported, target_keys)
                     if val is not None:
-                        st.session_state[widget_key] = float(val)
+                        st.session_state[widget_key] = max(0.0, float(val))
 
                 # Optional allocation sliders mapping (if importing from Module 04 results)
                 alloc_keys = {
@@ -99,7 +102,7 @@ def main() -> None:
                 for widget_key, target_keys in alloc_keys.items():
                     val = find_nested_val(imported, target_keys)
                     if val is not None:
-                        st.session_state[widget_key] = int(round(float(val)))
+                        st.session_state[widget_key] = max(0, min(100, int(round(float(val)))))
 
                 st.success("JSON loaded. Matching stream keys and parameters have been populated.")
                 st.rerun()
@@ -310,6 +313,10 @@ def main() -> None:
             "other_material": o_material,
             "ash_reuse": a_reuse,
             "ash_disposal": a_disposal,
+            "water_recycle": water_recycle,
+            "water_treatment": water_treatment,
+            "co2_capture": co2_capture,
+            "co2_use": co2_use,
         },
         "outputs": {
             "solid_recovered": solids_recovered,
@@ -341,11 +348,31 @@ def main() -> None:
         mime="text/csv",
     )
 
-    # Comprehensive CSV of all balances
+    # Comprehensive CSV of all balances and indicators
+    solids_export_df = summary.assign(Category="Solids").rename(columns={
+        "Stream": "Stream / Indicator",
+        f"Input ({unit})": f"Flow / Value ({unit})",
+        f"Allocated to recovery ({unit})": f"Recovered / Utilized ({unit})",
+        f"Unassigned / disposal ({unit})": f"Unassigned / Discharged ({unit})",
+    })
+    water_export_df = water_tbl.assign(Category="Water").rename(columns={
+        "Item": "Stream / Indicator",
+        f"Flow ({unit})": f"Flow / Value ({unit})",
+    })
+    co2_export_df = co2_tbl.assign(Category="CO2").rename(columns={
+        "Item": "Stream / Indicator",
+        f"Flow ({unit})": f"Flow / Value ({unit})",
+    })
+    indicators_export_df = indicator_tbl.assign(Category="Indicator").rename(columns={
+        "Indicator": "Stream / Indicator",
+        "Value": f"Flow / Value ({unit})",
+        "Definition": "Notes",
+    })
     all_streams_df = pd.concat([
-        summary.assign(Category="Solids").rename(columns={f"Input ({unit})": "Input", f"Allocated to recovery ({unit})": "Recovered/Utilized", f"Unassigned / disposal ({unit})": "Unassigned/Discharge"}),
-        water_tbl.assign(Category="Water").rename(columns={f"Flow ({unit})": "Flow"}),
-        co2_tbl.assign(Category="CO2").rename(columns={f"Flow ({unit})": "Flow"}),
+        solids_export_df,
+        water_export_df,
+        co2_export_df,
+        indicators_export_df,
     ], ignore_index=True, sort=False)
     st.download_button(
         "Download complete streams & indicators (CSV)",
